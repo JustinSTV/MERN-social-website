@@ -1,0 +1,181 @@
+MERN-social-media-app
+
+Features:
+  User Authentication (Sign up, Login, Logout)
+  Profile Creation and Management
+  Friend Requests and User Relationships
+  News Feed with Posts (text, media)
+  Media Uploads (images/videos)
+  Real-Time Notifications
+  Search/find new users
+  Privacy Settings (private profiles)
+
+!! MEDIA STORAGE !!
+
+FRONT-END:
+  React
+  TypeScript
+  react-router-dom
+  JWT
+  styled-components
+  forms and validations (formik/yup)
+  react-icons
+  Context/redux
+  CRUD
+
+  Components:
+    Authentication pages:
+      login, register, forgot-password
+    Profile Page:
+      Display user info, edit page, logged in user page
+    News Feed:
+      Display posts, comment and like functions
+    Friends:
+      Friend requests, list of Friends
+    Notifications:
+      Bell icon with dropdown real time notifications
+
+  Funcionalities:
+    AUTH:
+      Login Page:
+        Form with email and password fields.
+        "Forgot Password" link.
+        Login button:
+          Sends user credentials to the backend for authentication.
+          If successful, redirects to the News Feed page.
+          If failed, shows an error message.
+      
+      Registration Page:
+        Form with fields: username, email, password, confirm password, and profile picture upload.
+        Validation for required fields, email format, and password match.
+        Registration button:
+          Sends data to the backend to create a new user.
+          Shows success message or error.
+
+    USER:
+      My Profile Page:
+        Display user details:
+          Profile picture, username, bio, cover photo.
+          Edit profile button:
+            Opens a modal or redirects to the Edit Profile page.
+        Tabs/sections:
+          Posts Tab: User’s own posts with options to edit/delete.
+          Friends Tab: List of user’s friends with "Unfriend" button.
+        Button to upload/change profile picture and cover photo.
+      
+      Other User’s Profile Page:
+        Display user details:
+          Profile picture, username, bio, cover photo.
+        Friend-related actions:
+          If not friends:
+            "Add Friend" button (send friend request).
+          If friends:
+            "Message" button.
+            "Unfriend" button.
+        Tabs/sections:
+          Posts Tab: User’s public posts.
+          Friends Tab: List of mutual friends and total friends count.
+
+    NEWS FEED:
+      Display a list of posts (from friends and the user) sorted by time.
+      Post functionalities:
+        Like/unlike posts.
+        Comment on posts
+      Post creation:
+        Text field for writing content.
+        Media upload (images/videos).
+        Submit button to create a post.
+      Infinite scrolling or "Load More" button for fetching older posts.
+
+    FRIENDS:
+      Friend Requests Page:
+        List of received friend requests with:
+          Accept button.
+          Reject button.
+        List of sent friend requests with:
+          Cancel button to withdraw a request.
+      Friends List Page:
+        List of all friends with:
+          Profile picture, username, and link to their profile.
+          Unfriend button.
+      Search Users Page:
+          Search bar to find users by username.
+        Results displayed with:
+          Profile picture, username, and link to their profile.
+          Add Friend or Message button.
+  
+    NOTIFICATIONS:
+      List of notifications (likes, comments, friend requests, etc.).
+      Mark notifications as read/unread.
+      Real-time updates for new notifications (WebSocket).
+      Clicking a notification redirects to the relevant post, comment, or user profile.
+  
+    POST DETAILS:
+      Expanded view of a single post.
+      Shows:
+        Full post content and media.
+        All comments on the post.
+  
+    SETTINGS:
+      General Settings:
+        Update username, email, and bio.
+        Change password:
+          Old password, new password, confirm password.
+      Privacy Settings:
+        Manage account visibility:
+          Public or private profile.
+        Control who can send friend requests:
+          Everyone, friends of friends, no one.
+        Manage blocked users.
+
+
+BACK-END:
+  Node.js
+  Express
+  MongoDB
+  socket.io
+  uuid
+  bcrypt
+  JWT
+
+  Routes:
+    Auth:
+      POST /auth/register – User registration.
+      POST /auth/login – User login.
+      POST /auth/logout – User logout.
+    Users:
+      GET /users/:id – Fetch user details.
+      PUT /users/:id – Update user profile.
+      ! NEED ROUTE FOR USER SEARCHING ! - Search users.
+    Post:
+      POST /post – Create a post.
+      GET /post – Fetch posts for the news feed.
+      PUT /post/:id – Update a post.
+      DELETE /post/:id – Delete a post.
+    Friends:
+      POST /friends/request – Send a friend request.
+      GET /friends/requests – Get all friend requests.
+      PUT /friends/request/:id – Accept/Reject friend request.
+    Notifications:
+      GET /api/notifications – Fetch notifications.
+      PUT /api/notifications/:id – Mark as read.
+
+WEB-SOCKET:
+  Real-time friend request status updates.
+  Notifications for likes/comments on posts.
+  Online/offline status indicators for friends
+
+
+DATABASE:
+  Collections:
+    Users:
+      _id, username, email, password (hashed), profilePicture, coverPicture, bio, friends (array of user _ids), notifications (array).
+    Posts:
+      _id, author (user _id), content, media (URLs or paths if any), createdAt, likes (array of user _ids), comments (array of comment objects).
+    Comments:
+      _id, postId, author (user _id), content, createdAt.
+    FriendRequests:
+      _id, sender (user _id), receiver (user _id), status (pending, accepted, rejected), createdAt.
+    Notifications:
+      _id, userId, type (e.g., like, comment, friend request), referenceId (post/comment ID), isRead, createdAt.
+
