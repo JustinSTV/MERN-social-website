@@ -1,4 +1,5 @@
 import { connectDB } from "../../config/dbConfig.js";
+import { checkExistingUser } from "../../middleware/checkUser.js";
 
 import { Router } from "express";
 import bcrypt from "bcrypt";
@@ -6,7 +7,7 @@ import { v4 as generateID } from "uuid";
 
 const router = Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", checkExistingUser, async (req, res) => {
   const client = await connectDB();
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -26,17 +27,17 @@ router.post("/register", async (req, res) => {
       // createdAt: new Date(),
     };
 
-    const result = await client
+    await client
       .db("social-website")
       .collection("users")
       .insertOne(newUser);
 
-    const data = await client
-      .db("social-website")
-      .collection("users")
-      .findOne({ _id: result.insertedId });
+    const { password: _, ...userWithoutPassword } = newUser;
 
-    res.send(data);
+    res.status(201).json({
+      message: "Registration successful",
+      user: userWithoutPassword
+    });
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).send(error);
