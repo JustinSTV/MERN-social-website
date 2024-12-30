@@ -1,4 +1,4 @@
-import { connectDB } from "../../config/dbConfig.js";
+import { usersCollection } from "../../config/dbConfig.js";
 import { checkExistingUser } from "../../middleware/checkUser.js";
 
 import { Router } from "express";
@@ -8,7 +8,6 @@ import { v4 as generateID } from "uuid";
 const router = Router();
 
 router.post("/register", checkExistingUser, async (req, res) => {
-  const client = await connectDB();
   try {
     const { firstName, lastName, email, password } = req.body;
 
@@ -27,10 +26,12 @@ router.post("/register", checkExistingUser, async (req, res) => {
       // createdAt: new Date(),
     };
 
-    await client
-      .db("social-website")
-      .collection("users")
-      .insertOne(newUser);
+    // await client
+    //   .db("social-website")
+    //   .collection("users")
+    //   .insertOne(newUser);
+
+    await usersCollection.insertOne(newUser);
 
     const { password: _, ...userWithoutPassword } = newUser;
 
@@ -41,8 +42,6 @@ router.post("/register", checkExistingUser, async (req, res) => {
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).send(error);
-  } finally {
-    await client.close()
   }
 });
 
@@ -76,8 +75,6 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Login failed" });
-  } finally {
-    await client.close();
   }
 })
 
