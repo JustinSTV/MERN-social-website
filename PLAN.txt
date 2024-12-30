@@ -179,3 +179,72 @@ DATABASE:
     Notifications:
       _id, userId, type (e.g., like, comment, friend request), referenceId (post/comment ID), isRead, createdAt.
 
+
+├── client/
+│   ├── public/
+│   └── src/
+│       ├── components/
+│       │   ├── auth/
+│       │   │   ├── Login.tsx
+│       │   │   ├── Register.tsx
+│       │   │   └── ForgotPassword.tsx
+│       │   ├── profile/
+│       │   │   ├── ProfilePage.tsx
+│       │   │   ├── EditProfile.tsx
+│       │   │   ├── ProfilePicture.tsx
+│       │   │   └── CoverPhoto.tsx
+│       │   ├── feed/
+│       │   │   ├── NewsFeed.tsx
+│       │   │   ├── Post.tsx
+│       │   │   ├── CreatePost.tsx
+│       │   │   └── Comments.tsx
+│       │   ├── friends/
+│       │   │   ├── FriendRequests.tsx
+│       │   │   ├── FriendsList.tsx
+│       │   │   └── SearchUsers.tsx
+│       │   └── notifications/
+│       │       └── NotificationDropdown.tsx
+│       ├── context/
+│       │   ├── AuthContext.tsx
+│       │   └── SocketContext.tsx
+│       ├── hooks/
+│       │   ├── useAuth.ts
+│       │   └── useSocket.ts
+│       ├── utils/
+│       │   ├── api.ts
+│       │   └── validators.ts
+│       ├── styles/
+│       │   └── GlobalStyles.ts
+│       └── App.tsx
+│
+├── server/
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   ├── authController.ts
+│   │   │   ├── userController.ts
+│   │   │   ├── postController.ts
+│   │   │   ├── friendController.ts
+│   │   │   └── notificationController.ts
+│   │   ├── models/
+│   │   │   ├── User.ts
+│   │   │   ├── Post.ts
+│   │   │   ├── Comment.ts
+│   │   │   ├── FriendRequest.ts
+│   │   │   └── Notification.ts
+│   │   ├── routes/
+│   │   │   ├── auth.ts
+│   │   │   ├── users.ts
+│   │   │   ├── posts.ts
+│   │   │   ├── friends.ts
+│   │   │   └── notifications.ts
+│   │   ├── middleware/
+│   │   │   ├── auth.ts
+│   │   │   └── upload.ts
+│   │   ├── config/
+│   │   │   ├── db.ts
+│   │   │   └── socket.ts
+│   │   └── app.ts
+│   └── package.json
+│
+└── package.json
+
