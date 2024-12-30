@@ -31,10 +31,12 @@ router.post("/register", async (req, res) => {
       .collection("users")
       .insertOne(newUser);
 
-    console.log("new user", newUser)
-    console.log("result", result)
-    console.log("data", data)
+    const data = await client
+      .db("social-website")
+      .collection("users")
+      .findOne({ _id: result.insertedId });
 
+    res.send(data);
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).send(error);
