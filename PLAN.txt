@@ -171,7 +171,7 @@ WEB-SOCKET:
 DATABASE:
   Collections:
     Users:
-      _id, username, email, password (hashed), profilePicture, coverPicture, bio, friends (array of user _ids), notifications (array).
+      _id, firstName, lastName, email, password (hashed), profilePicture, coverPicture, bio, friends (array of user _ids), notifications (array).
     Posts:
       _id, author (user _id), content, media (URLs or paths if any), createdAt, likes (array of user _ids), comments (array of comment objects).
     Comments:
