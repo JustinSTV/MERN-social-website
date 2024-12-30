@@ -137,6 +137,8 @@ BACK-END:
   uuid
   bcrypt
   JWT
+  cors
+  nodemon
 
   Routes:
     Auth:
