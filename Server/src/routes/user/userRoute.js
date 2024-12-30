@@ -1,4 +1,4 @@
-import { usersCollection } from "../../config/dbConfig.js";
+import { usersCollection, connectDB } from "../../config/dbConfig.js";
 import { checkExistingUser } from "../../middleware/checkUser.js";
 
 import { Router } from "express";
@@ -46,14 +46,16 @@ router.post("/register", checkExistingUser, async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const client = await connectDB();
   try {
+    await connectDB();
     const { email, password } = req.body;
 
-    const user = await client
-      .db("social-website")
-      .collection("users")
-      .findOne({ email });
+    // const user = await client
+    //   .db("social-website")
+    //   .collection("users")
+    //   .findOne({ email });
+
+    const user = await usersCollection.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
