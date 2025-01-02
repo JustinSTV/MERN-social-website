@@ -4,6 +4,7 @@ import { checkExistingUser } from "../../middleware/checkUser.js";
 import { Router } from "express";
 import bcrypt from "bcrypt";
 import { v4 as generateID } from "uuid";
+import jwt from "jsonwebtoken"
 
 const router = Router();
 
@@ -49,12 +50,6 @@ router.post("/login", async (req, res) => {
   try {
     await connectDB();
     const { email, password } = req.body;
-
-    // const user = await client
-    //   .db("social-website")
-    //   .collection("users")
-    //   .findOne({ email });
-
     const user = await usersCollection.findOne({ email });
 
     if (!user) {
@@ -67,10 +62,17 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
     const { password: _, ...userWithoutPassword } = user;
 
     res.status(200).json({
       message: "Login successful",
+      token,
       user: userWithoutPassword
     })
 
