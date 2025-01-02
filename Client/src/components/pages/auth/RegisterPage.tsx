@@ -5,7 +5,8 @@ const RegisterPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -23,13 +24,23 @@ const RegisterPage = () => {
       <h1>Register</h1>
       <form onSubmit={formik.handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="firstName">First name:</label>
           <input 
             type="text" 
-            id="username" name="username"
+            id="firstName" name="firstName"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.username}
+            value={formik.values.firstName}
+          />
+        </div>
+        <div>
+          <label htmlFor="lastName">Last name:</label>
+          <input 
+            type="text" 
+            id="lastName" name="lastName"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.lastName}
           />
         </div>
         <div>
