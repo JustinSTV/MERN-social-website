@@ -1,11 +1,9 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { useAuth } from "../../../hooks/AuthHook";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
 
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -18,26 +16,6 @@ const LoginPage = () => {
     }),
     onSubmit: async (values) => {
       console.log(values);
-      try {
-        const response = await fetch('/api/users/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(values)
-        });
-
-        const data = await response.json();
-        
-        if (response.ok) {
-          login(data.token, data.user);
-          navigate('/feed');
-        } else {
-          console.error('Login failed:', data.message);
-        }
-      } catch (error) {
-        console.error('Login error:', error);
-      }
     }
   })
 
