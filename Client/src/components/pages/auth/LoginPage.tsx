@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../../../context/User/useUserContext";
 
 const LoginPage = () => {
-
+  const { login, state } = useUserContext();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -12,10 +13,17 @@ const LoginPage = () => {
       password: ""
     },
     validationSchema: Yup.object({
-
+      email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+      password: Yup.string()
+      .required('Password is required')
     }),
     onSubmit: async (values) => {
-      console.log(values);
+      const success = await login(values.email, values.password);
+      if(success){
+        navigate('/feed')
+      }
     }
   })
 
@@ -32,6 +40,10 @@ const LoginPage = () => {
             onBlur={formik.handleBlur}
             value={formik.values.email}
           />
+          {
+            formik.touched.email && formik.errors.email
+            && <p>{formik.errors.email}</p>
+          }
         </div>
         <div>
           <label htmlFor="password">Password:</label>
@@ -42,8 +54,13 @@ const LoginPage = () => {
             onBlur={formik.handleBlur}
             value={formik.values.password}
           />
+          {
+            formik.touched.password && formik.errors.password
+            && <p>{formik.errors.password}</p>
+          }
         </div>
         <input type="submit" value="Login"/>
+        {state.error && <div className="error">{state.error}</div>}
       </form>
     </section>
   );

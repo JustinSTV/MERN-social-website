@@ -1,5 +1,6 @@
 export type UserContextTypes = {
-
+  state: UserState,
+  login: (email: string, password: string) => Promise<boolean>
 }
 
 export type User = {
@@ -20,6 +21,13 @@ export type UserState = {
   loading: boolean;
   error: string | null;
 };
+
+export const initialState: UserState = {
+  user: null,
+  isAuthenticated: false,
+  loading: false,
+  error: null
+}
 
 export type UserActionTypes = 
   | { type: 'LOGIN_START' }

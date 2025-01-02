@@ -3,9 +3,12 @@ import App from './App.tsx'
 import './index.css'
 
 import { BrowserRouter } from 'react-router-dom'
+import { UserProvider } from './context/User/UserContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
+  <BrowserRouter>
+    <UserProvider>
       <App />
-    </BrowserRouter>
+    </UserProvider>
+  </BrowserRouter>
 )
