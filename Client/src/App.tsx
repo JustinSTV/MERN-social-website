@@ -1,4 +1,5 @@
 import { Route, Routes, Navigate } from 'react-router-dom'
+import { useUserContext } from './context/User/useUserContext'
 
 import LoginPage from './components/pages/auth/LoginPage'
 import RegisterPage from './components/pages/auth/RegisterPage'
@@ -8,10 +9,20 @@ import ProtectedRoute from './components/pages/auth/ProtectedRoute'
 
 const App = () => {
 
+  const { state } = useUserContext();
+
   return (
     <Routes>
-      <Route path='/login' element={<LoginPage />} />
-      <Route path='/register' element={<RegisterPage />} />
+      <Route path='/login' element={
+        state.isAuthenticated  
+          ? <Navigate to='/feed' replace />
+          : <LoginPage />
+      } />
+      <Route path='/register' element={
+        state.isAuthenticated  
+          ? <Navigate to='/feed' replace />
+          : <RegisterPage />
+      } />
 
       <Route element={<ProtectedRoute />}>
         <Route element={<MainOutlet />}>
@@ -19,6 +30,8 @@ const App = () => {
           <Route path='/feed' element={<NewsFeed />} />
         </Route>
       </Route>
+
+      <Route path='*' element={<Navigate to='/' replace/>} />
     </Routes>
   )
 }
