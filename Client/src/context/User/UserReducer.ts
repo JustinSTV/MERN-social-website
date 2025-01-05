@@ -47,7 +47,13 @@ const userReducer = (state: UserState, action: UserActionTypes): UserState => {
         ...state,
         error: null
       };
-
+    
+    case 'CLEAR_MESSAGES':
+      return{
+        ...state,
+        error: null,
+        success: null
+      }
     default:
       return state;
   }

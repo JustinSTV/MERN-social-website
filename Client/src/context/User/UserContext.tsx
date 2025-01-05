@@ -40,6 +40,10 @@ export const UserProvider = ({ children }: ChildProps) => {
         payload: error instanceof Error ? error.message : "Login failed"
       });
       return false;
+    } finally{
+      setTimeout(() => {
+        dispatch({ type: 'CLEAR_MESSAGES' })
+      }, 3000)
     }
   };
 
@@ -74,6 +78,10 @@ export const UserProvider = ({ children }: ChildProps) => {
         payload: error instanceof Error ? error.message : "Registration failed"
       });
       return false
+    } finally{
+      setTimeout(() => {
+        dispatch({ type: 'CLEAR_MESSAGES' })
+      }, 3000)
     }
   }
 
