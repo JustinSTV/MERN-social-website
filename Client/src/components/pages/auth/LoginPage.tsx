@@ -22,7 +22,9 @@ const LoginPage = () => {
     onSubmit: async (values) => {
       const success = await login(values.email, values.password);
       if(success){
-        navigate('/feed')
+        setTimeout(() => {
+          navigate('/feed');
+        }, 2000);
       }
     }
   })

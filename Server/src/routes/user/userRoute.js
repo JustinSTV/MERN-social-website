@@ -11,8 +11,7 @@ const router = Router();
 router.post("/register", checkExistingUser, async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
-
-    const hashedPassword = bcrypt.hashSync(password, 10)
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
     const newUser = {
       _id: generateID(),
@@ -27,17 +26,19 @@ router.post("/register", checkExistingUser, async (req, res) => {
       // createdAt: new Date(),
     };
 
-    // await client
-    //   .db("social-website")
-    //   .collection("users")
-    //   .insertOne(newUser);
-
     await usersCollection.insertOne(newUser);
+
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
 
     const { password: _, ...userWithoutPassword } = newUser;
 
     res.status(201).json({
       message: "Registration successful",
+      token,
       user: userWithoutPassword
     });
   } catch (error) {

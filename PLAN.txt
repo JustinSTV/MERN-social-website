@@ -38,12 +38,12 @@ FRONT-END:
   Funcionalities:
     AUTH:
       Login Page:
-        Form with email and password fields.
+        Form with email and password fields. +
         "Forgot Password" link.
         Login button:
-          Sends user credentials to the backend for authentication.
+          Sends user credentials to the backend for authentication. +
           If successful, redirects to the News Feed page.
-          If failed, shows an error message.
+          If failed, shows an error message. +
       
       Registration Page:
         Form with fields: username, email, password, confirm password, and profile picture upload.
@@ -142,8 +142,8 @@ BACK-END:
 
   Routes:
     Auth:
-      POST /auth/register – User registration.
-      POST /auth/login – User login.
+      POST /auth/register – User registration. +
+      POST /auth/login – User login. +
       POST /auth/logout – User logout.
     Users:
       GET /users/:id – Fetch user details.

@@ -1,5 +1,5 @@
 import { createContext, useReducer } from 'react';
-import { initialState, UserContextTypes } from '../../types/UserTypes';
+import { initialState, UserContextTypes, User, RegisterData } from '../../types/UserTypes';
 import userReducer from './UserReducer';
 
 type ChildProps = { children: React.ReactElement };
@@ -37,11 +37,43 @@ export const UserProvider = ({ children }: ChildProps) => {
     }
   };
 
+  const register = async (userData: RegisterData) => {
+    dispatch({ type: 'REGISTER_START' });
+    try{
+      const res = await fetch('/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+
+      const data = await res.json();
+      console.log(data)
+
+      if(!res.ok){
+        throw new Error(data.message)
+      };
+
+      localStorage.setItem('token', data.token);
+      dispatch({ 
+        type: 'REGISTER_SUCCESS',
+        payload: data.user
+      });
+      return true;
+    }catch(error){
+      dispatch({ 
+        type: 'REGISTER_FAILURE' ,
+        payload: error instanceof Error ? error.message : "Registration failed"
+      });
+      return false
+    }
+  }
+
   return(
     <UserContext.Provider
       value={{
         state,
-        login
+        login,
+        register
       }}
     >
       { children }

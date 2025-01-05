@@ -1,7 +1,10 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
+import { useUserContext } from "../../../context/User/useUserContext";
 
 const RegisterPage = () => {
+
+  const { register } = useUserContext();
 
   const formik = useFormik({
     initialValues: {
@@ -15,7 +18,11 @@ const RegisterPage = () => {
   
     }),
     onSubmit: async (values) => {
-      console.log(values)
+      console.log(values);
+      const success = await register(values);
+      if(success){
+        console.log(success)
+      }
     }
   })
 
