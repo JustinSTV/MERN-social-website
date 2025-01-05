@@ -15,10 +15,11 @@ const userReducer = (state: UserState, action: UserActionTypes): UserState => {
     case 'REGISTER_SUCCESS':
       return{
         ...state,
-        user: action.payload,
+        user: action.payload.user,
         isAuthenticated: true,
         loading: false,
-        error: null
+        error: null,
+        success: action.payload.message
       };
 
     case 'LOGIN_FAILURE':

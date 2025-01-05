@@ -21,13 +21,15 @@ export type UserState = {
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
+  success: string | null;
 };
 
 export const initialState: UserState = {
   user: null,
   isAuthenticated: false,
   loading: false,
-  error: null
+  error: null,
+  success: null
 };
 
 export type RegisterData = {
@@ -39,10 +41,10 @@ export type RegisterData = {
 
 export type UserActionTypes = 
   | { type: 'LOGIN_START' }
-  | { type: 'LOGIN_SUCCESS'; payload: User }
+  | { type: 'LOGIN_SUCCESS'; payload: { user: User, message: string } }
   | { type: 'LOGIN_FAILURE'; payload: string }
   | { type: 'REGISTER_START' }
-  | { type: 'REGISTER_SUCCESS'; payload: User }
+  | { type: 'REGISTER_SUCCESS'; payload: { user: User, message: string } }
   | { type: 'REGISTER_FAILURE'; payload: string }
   | { type: 'LOGOUT' }
   | { type: 'UPDATE_USER'; payload: User }

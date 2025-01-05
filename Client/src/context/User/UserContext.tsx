@@ -26,7 +26,13 @@ export const UserProvider = ({ children }: ChildProps) => {
       }
 
       localStorage.setItem('token', data.token);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: data.user });
+      dispatch({ 
+        type: 'LOGIN_SUCCESS', 
+        payload: {
+          user: data.user,
+          message: data.message
+        } 
+      });
       return true;
     } catch(error){
       dispatch({
@@ -56,7 +62,10 @@ export const UserProvider = ({ children }: ChildProps) => {
       localStorage.setItem('token', data.token);
       dispatch({ 
         type: 'REGISTER_SUCCESS',
-        payload: data.user
+        payload: {
+          user: data.user,
+          message: data.message
+        }
       });
       return true;
     }catch(error){

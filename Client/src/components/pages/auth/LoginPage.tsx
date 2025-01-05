@@ -61,6 +61,7 @@ const LoginPage = () => {
         </div>
         <input type="submit" value="Login"/>
         {state.error && <div className="error">{state.error}</div>}
+        {state.success && <div className="success">{state.success}</div>}
       </form>
     </section>
   );
