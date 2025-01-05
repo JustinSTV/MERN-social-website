@@ -42,15 +42,15 @@ FRONT-END:
         "Forgot Password" link.
         Login button:
           Sends user credentials to the backend for authentication. +
-          If successful, redirects to the News Feed page.
+          If successful, redirects to the News Feed page. +
           If failed, shows an error message. +
       
       Registration Page:
-        Form with fields: username, email, password, confirm password, and profile picture upload.
-        Validation for required fields, email format, and password match.
+        Form with fields: username, email, password, confirm password, and profile picture upload. +-
+        Validation for required fields, email format, and password match. +
         Registration button:
-          Sends data to the backend to create a new user.
-          Shows success message or error.
+          Sends data to the backend to create a new user. +
+          Shows success message or error. +
 
     USER:
       My Profile Page:
