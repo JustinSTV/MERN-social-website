@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../../context/User/useUserContext";
+import { emailSchema, passwordSchema } from "../../../schemas/authSchema";
 
 const LoginPage = () => {
   const { login, state } = useUserContext();
@@ -13,11 +14,8 @@ const LoginPage = () => {
       password: ""
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-      .email('Invalid email address')
-      .required('Email is required'),
-      password: Yup.string()
-      .required('Password is required')
+      email: emailSchema,
+      password: passwordSchema
     }),
     onSubmit: async (values) => {
       const success = await login(values.email, values.password);

@@ -1,5 +1,5 @@
 import { createContext, useReducer } from 'react';
-import { initialState, UserContextTypes, User, RegisterData } from '../../types/UserTypes';
+import { initialState, UserContextTypes, RegisterData } from '../../types/UserTypes';
 import userReducer from './UserReducer';
 
 type ChildProps = { children: React.ReactElement };
