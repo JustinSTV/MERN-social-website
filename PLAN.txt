@@ -25,7 +25,7 @@ FRONT-END:
 
   Components:
     Authentication pages:
-      login, register, forgot-password
+      login +, register +, forgot-password
     Profile Page:
       Display user info, edit page, logged in user page
     News Feed:
