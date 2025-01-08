@@ -25,7 +25,7 @@ FRONT-END:
 
   Components:
     Authentication pages:
-      login, register, forgot-password
+      login +, register +, forgot-password
     Profile Page:
       Display user info, edit page, logged in user page
     News Feed:
@@ -38,19 +38,19 @@ FRONT-END:
   Funcionalities:
     AUTH:
       Login Page:
-        Form with email and password fields.
+        Form with email and password fields. +
         "Forgot Password" link.
         Login button:
-          Sends user credentials to the backend for authentication.
-          If successful, redirects to the News Feed page.
-          If failed, shows an error message.
+          Sends user credentials to the backend for authentication. +
+          If successful, redirects to the News Feed page. +
+          If failed, shows an error message. +
       
       Registration Page:
-        Form with fields: username, email, password, confirm password, and profile picture upload.
-        Validation for required fields, email format, and password match.
+        Form with fields: username, email, password, confirm password, and profile picture upload. +-
+        Validation for required fields, email format, and password match. +
         Registration button:
-          Sends data to the backend to create a new user.
-          Shows success message or error.
+          Sends data to the backend to create a new user. +
+          Shows success message or error. +
 
     USER:
       My Profile Page:
@@ -137,11 +137,13 @@ BACK-END:
   uuid
   bcrypt
   JWT
+  cors
+  nodemon
 
   Routes:
     Auth:
-      POST /auth/register – User registration.
-      POST /auth/login – User login.
+      POST /auth/register – User registration. +
+      POST /auth/login – User login. +
       POST /auth/logout – User logout.
     Users:
       GET /users/:id – Fetch user details.
@@ -169,7 +171,7 @@ WEB-SOCKET:
 DATABASE:
   Collections:
     Users:
-      _id, username, email, password (hashed), profilePicture, coverPicture, bio, friends (array of user _ids), notifications (array).
+      _id, firstName, lastName, email, password (hashed), profilePicture, coverPicture, bio, friends (array of user _ids), notifications (array).
     Posts:
       _id, author (user _id), content, media (URLs or paths if any), createdAt, likes (array of user _ids), comments (array of comment objects).
     Comments:
@@ -178,4 +180,73 @@ DATABASE:
       _id, sender (user _id), receiver (user _id), status (pending, accepted, rejected), createdAt.
     Notifications:
       _id, userId, type (e.g., like, comment, friend request), referenceId (post/comment ID), isRead, createdAt.
+
+
+├── client/
+│   ├── public/
+│   └── src/
+│       ├── components/
+│       │   ├── auth/
+│       │   │   ├── Login.tsx
+│       │   │   ├── Register.tsx
+│       │   │   └── ForgotPassword.tsx
+│       │   ├── profile/
+│       │   │   ├── ProfilePage.tsx
+│       │   │   ├── EditProfile.tsx
+│       │   │   ├── ProfilePicture.tsx
+│       │   │   └── CoverPhoto.tsx
+│       │   ├── feed/
+│       │   │   ├── NewsFeed.tsx
+│       │   │   ├── Post.tsx
+│       │   │   ├── CreatePost.tsx
+│       │   │   └── Comments.tsx
+│       │   ├── friends/
+│       │   │   ├── FriendRequests.tsx
+│       │   │   ├── FriendsList.tsx
+│       │   │   └── SearchUsers.tsx
+│       │   └── notifications/
+│       │       └── NotificationDropdown.tsx
+│       ├── context/
+│       │   ├── AuthContext.tsx
+│       │   └── SocketContext.tsx
+│       ├── hooks/
+│       │   ├── useAuth.ts
+│       │   └── useSocket.ts
+│       ├── utils/
+│       │   ├── api.ts
+│       │   └── validators.ts
+│       ├── styles/
+│       │   └── GlobalStyles.ts
+│       └── App.tsx
+│
+├── server/
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   ├── authController.ts
+│   │   │   ├── userController.ts
+│   │   │   ├── postController.ts
+│   │   │   ├── friendController.ts
+│   │   │   └── notificationController.ts
+│   │   ├── models/
+│   │   │   ├── User.ts
+│   │   │   ├── Post.ts
+│   │   │   ├── Comment.ts
+│   │   │   ├── FriendRequest.ts
+│   │   │   └── Notification.ts
+│   │   ├── routes/
+│   │   │   ├── auth.ts
+│   │   │   ├── users.ts
+│   │   │   ├── posts.ts
+│   │   │   ├── friends.ts
+│   │   │   └── notifications.ts
+│   │   ├── middleware/
+│   │   │   ├── auth.ts
+│   │   │   └── upload.ts
+│   │   ├── config/
+│   │   │   ├── db.ts
+│   │   │   └── socket.ts
+│   │   └── app.ts
+│   └── package.json
+│
+└── package.json
 
