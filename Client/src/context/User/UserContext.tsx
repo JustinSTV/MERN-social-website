@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react';
+import { createContext, useEffect, useReducer } from 'react';
 import { initialState, UserContextTypes, RegisterData } from '../../types/UserTypes';
 import userReducer from './UserReducer';
 
@@ -9,6 +9,41 @@ export const UserContext = createContext<UserContextTypes | undefined>(undefined
 
 export const UserProvider = ({ children }: ChildProps) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
+
+  const checkAuth = async () => {
+    const token = localStorage.getItem('token');
+
+    if(!token) return;
+
+    try{
+      const res = await fetch('/api/users/verify', {
+        headers:{
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if(!res.ok){
+        throw new Error('Token invalid');
+      };
+
+      const data = await res.json();
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        payload: {
+          user: data.user,
+          message: 'Session restored'
+        }
+      });
+
+    } catch {
+      localStorage.removeItem('token');
+      dispatch({ type: 'LOGOUT' })
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, [])
 
   const login = async (email: string, password: string) => {
     dispatch({ type: 'LOGIN_START' });

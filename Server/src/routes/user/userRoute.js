@@ -1,5 +1,6 @@
 import { usersCollection, connectDB } from "../../config/dbConfig.js";
 import { checkExistingUser } from "../../middleware/checkUser.js";
+import { authenticateToken } from "../../middleware/authMiddleware.js"
 
 import { Router } from "express";
 import bcrypt from "bcrypt";
@@ -80,6 +81,26 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Login failed" });
+  }
+});
+
+router.post("/forgot-password", async (req, res) => {
+  //TODO: for later implementation
+});
+
+router.get('/verify', authenticateToken, async (req, res) => {
+  try {
+    const user = await usersCollection.findOne({ _id: req.user.id });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    };
+
+    const { password: _, ...userWithoutPassword } = user;
+
+    res.json({ user: userWithoutPassword });
+  } catch (error) {
+    res.status(500).json({ message: "Token verification failed" });
   }
 })
 
