@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../../../context/User/useUserContext";
 import { confirmPasswordSchema, emailSchema, firsNameSchema, lastNameSchema, passwordSchema } from "../../../schemas/authSchema";
 
@@ -127,6 +127,7 @@ const RegisterPage = () => {
           {state.error && <div className="error-message global">{state.error}</div>}
           {state.success && <div className="success">{state.success}</div>}
         </form>
+        <p>Already have an account? <Link to='/login'>Login</Link></p>
       </div>
     </section>
   );
