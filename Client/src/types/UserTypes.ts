@@ -1,7 +1,8 @@
 export type UserContextTypes = {
   state: UserState,
   login: (email: string, password: string) => Promise<boolean>,
-  register: (userData: RegisterData) => Promise<boolean>
+  register: (userData: RegisterData) => Promise<boolean>,
+  logout: () => void
 }
 
 export type User = {

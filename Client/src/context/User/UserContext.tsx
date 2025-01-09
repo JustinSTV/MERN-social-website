@@ -118,6 +118,10 @@ export const UserProvider = ({ children }: ChildProps) => {
         dispatch({ type: 'CLEAR_MESSAGES' })
       }, 3000)
     }
+  };
+
+  const logout = () => {
+    dispatch({ type: 'LOGOUT' })
   }
 
   return(
@@ -125,7 +129,8 @@ export const UserProvider = ({ children }: ChildProps) => {
       value={{
         state,
         login,
-        register
+        register,
+        logout
       }}
     >
       { children }

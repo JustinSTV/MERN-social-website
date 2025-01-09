@@ -3,7 +3,7 @@ import { useUserContext } from "../../../context/User/useUserContext";
 
 const Header = () => {
 
-  const { state } = useUserContext();
+  const { state, logout } = useUserContext();
 
   return (
     <header>
@@ -18,6 +18,7 @@ const Header = () => {
           </div>
         )}
       </nav>
+      <button onClick={() => logout()}>logout</button>
     </header>
   );
 }
