@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Logo from "../UI/molecule/Logo";
 
 type AuthLayoutType = {
   children: ReactNode;
@@ -6,8 +7,8 @@ type AuthLayoutType = {
 
 const AuthLayout = ({ children }: AuthLayoutType) => {
   return (
-    <section className="min-h-screen flex items-center justify-center gap-20">
-      <h1>YOUnivers</h1>
+    <section className="min-h-screen flex items-center justify-evenly gap-20">
+      <Logo />
       <div className="w-full max-w-md p-6">{children}</div>
     </section>
   );
