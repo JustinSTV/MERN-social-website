@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { User } from "../../../../types/UserTypes";
+import { User, EditProfileData } from "../../../../types/UserTypes";
 import EditProfileModal from "./EditProfileModal";
+import { useUserContext } from "../../../../context/User/useUserContext";
 
 type ProfileHeaderProps = {
   user: User | null;
@@ -8,9 +9,12 @@ type ProfileHeaderProps = {
 };
 const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const { updateProfile } = useUserContext();
 
-  const handleEditProfile = async () => {
-    console.log("open");
+  const handleEditProfile = async (values: EditProfileData) => {
+    if (user) {
+      await updateProfile(user._id, values);
+    }
   };
 
   if (!user) {

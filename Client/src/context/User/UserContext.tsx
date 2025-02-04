@@ -1,16 +1,10 @@
 import { createContext, useEffect, useReducer } from "react";
-import {
-  initialState,
-  UserContextTypes,
-  RegisterData,
-} from "../../types/UserTypes";
+import { initialState, UserContextTypes, RegisterData, User } from "../../types/UserTypes";
 import userReducer from "./UserReducer";
 
 type ChildProps = { children: React.ReactElement };
 
-export const UserContext = createContext<UserContextTypes | undefined>(
-  undefined
-);
+export const UserContext = createContext<UserContextTypes | undefined>(undefined);
 
 export const UserProvider = ({ children }: ChildProps) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
@@ -124,6 +118,39 @@ export const UserProvider = ({ children }: ChildProps) => {
     }
   };
 
+  const updateProfile = async (userId: string, userData: Partial<User>) => {
+    dispatch({ type: "UPDATE_PROFILE_START" });
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`/api/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      dispatch({
+        type: "UPDATE_PROFILE_SUCCESS",
+        payload: { user: data.user, message: "Profile updated successfully" },
+      });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: "UPDATE_PROFILE_FAILURE",
+        payload: error instanceof Error ? error.message : "Profile update failed",
+      });
+      return false;
+    }
+  };
+
   const logout = () => {
     dispatch({ type: "LOGOUT" });
   };
@@ -134,6 +161,7 @@ export const UserProvider = ({ children }: ChildProps) => {
         state,
         login,
         register,
+        updateProfile,
         logout,
       }}
     >

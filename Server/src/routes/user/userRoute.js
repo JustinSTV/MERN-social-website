@@ -20,11 +20,11 @@ router.post("/register", checkExistingUser, async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      // profileImage: '',
-      // coverPicture: "",
-      // bio: "",
-      // friends: [],
-      // createdAt: new Date(),
+      profileImage: '',
+      coverPicture: "",
+      bio: "",
+      friends: [],
+      createdAt: new Date(),
     };
 
     await usersCollection.insertOne(newUser);
@@ -101,6 +101,40 @@ router.get('/verify', authenticateToken, async (req, res) => {
     res.json({ user: userWithoutPassword });
   } catch (error) {
     res.status(500).json({ message: "Token verification failed" });
+  }
+});
+
+router.put('/:userId', authenticateToken, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const updates = req.body;
+
+    console.log('Update request received:', {
+      userId: req.params.userId,
+      updates: req.body
+    });
+
+    const user = await usersCollection.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await usersCollection.updateOne(
+      { _id: userId },
+      { $set: updates }
+    );
+
+    const updatedUser = await usersCollection.findOne({ _id: userId });
+    const { password: _, ...userWithoutPassword } = updatedUser;
+
+    res.json({
+      message: "Profile updated successfully",
+      user: userWithoutPassword
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update profile" })
   }
 })
 

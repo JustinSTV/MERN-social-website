@@ -1,9 +1,10 @@
 export type UserContextTypes = {
-  state: UserState,
-  login: (email: string, password: string) => Promise<boolean>,
-  register: (userData: RegisterData) => Promise<boolean>,
-  logout: () => void
-}
+  state: UserState;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (userData: RegisterData) => Promise<boolean>;
+  updateProfile: (userId: string, userData: Partial<User>) => Promise<boolean>;
+  logout: () => void;
+};
 
 export type User = {
   _id: string;
@@ -18,7 +19,7 @@ export type User = {
 };
 
 export type UserState = {
-  user: User | null,
+  user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
@@ -30,7 +31,7 @@ export const initialState: UserState = {
   isAuthenticated: false,
   loading: false,
   error: null,
-  success: null
+  success: null,
 };
 
 export type RegisterData = {
@@ -40,14 +41,23 @@ export type RegisterData = {
   password: string;
 };
 
-export type UserActionTypes = 
-  | { type: 'LOGIN_START' }
-  | { type: 'LOGIN_SUCCESS'; payload: { user: User, message: string } }
-  | { type: 'LOGIN_FAILURE'; payload: string }
-  | { type: 'REGISTER_START' }
-  | { type: 'REGISTER_SUCCESS'; payload: { user: User, message: string } }
-  | { type: 'REGISTER_FAILURE'; payload: string }
-  | { type: 'LOGOUT' }
-  | { type: 'UPDATE_USER'; payload: User }
-  | { type: 'CLEAR_ERROR' }
-  | { type: 'CLEAR_MESSAGES' }
+export type EditProfileData = {
+  firstName: string;
+  lastName: string;
+  bio: string;
+};
+
+export type UserActionTypes =
+  | { type: "LOGIN_START" }
+  | { type: "LOGIN_SUCCESS"; payload: { user: User; message: string } }
+  | { type: "LOGIN_FAILURE"; payload: string }
+  | { type: "REGISTER_START" }
+  | { type: "REGISTER_SUCCESS"; payload: { user: User; message: string } }
+  | { type: "REGISTER_FAILURE"; payload: string }
+  | { type: "LOGOUT" }
+  | { type: "UPDATE_USER"; payload: User }
+  | { type: "CLEAR_ERROR" }
+  | { type: "CLEAR_MESSAGES" }
+  | { type: "UPDATE_PROFILE_START" }
+  | { type: "UPDATE_PROFILE_SUCCESS"; payload: { user: User; message: string } }
+  | { type: "UPDATE_PROFILE_FAILURE"; payload: string };

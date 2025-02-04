@@ -1,18 +1,12 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { User } from "../../../../types/UserTypes";
+import { User, EditProfileData } from "../../../../types/UserTypes";
 
 type EditProfileModalProps = {
   user: User;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (values: EditProfileData) => Promise<void>;
-};
-
-type EditProfileData = {
-  firstName: string;
-  lastName: string;
-  bio: string;
 };
 
 const EditProfileModal = ({ user, isOpen, onSubmit, onClose }: EditProfileModalProps) => {
