@@ -1,10 +1,18 @@
+import { useState } from "react";
 import { User } from "../../../../types/UserTypes";
+import EditProfileModal from "./EditProfileModal";
 
 type ProfileHeaderProps = {
   user: User | null;
   isOwnProfile: boolean;
 };
 const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
+  const handleEditProfile = async () => {
+    console.log("open");
+  };
+
   if (!user) {
     return <div>Loading</div>;
   }
@@ -29,13 +37,24 @@ const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
           </div>
 
           {isOwnProfile ? (
-            <button className="px-4 py-2 bg-primary-600 rounded-full hover:bg-primary-700 transition">
+            <button
+              onClick={() => setEditModalOpen(true)}
+              className="px-4 py-2 bg-primary-600 rounded-full hover:bg-primary-700 transition"
+            >
               Edit Profile
             </button>
           ) : (
             <button className="px-4 py-2 bg-primary-600 rounded-full hover:bg-primary-700 transition">
               Connect
             </button>
+          )}
+          {user && (
+            <EditProfileModal
+              user={user}
+              isOpen={editModalOpen}
+              onClose={() => setEditModalOpen(false)}
+              onSubmit={handleEditProfile}
+            />
           )}
         </div>
       </div>
