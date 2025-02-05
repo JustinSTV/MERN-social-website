@@ -7,9 +7,10 @@ type ProfileHeaderProps = {
   user: User | null;
   isOwnProfile: boolean;
 };
-const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
+const ProfileHeader = ({ isOwnProfile }: ProfileHeaderProps) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const { updateProfile } = useUserContext();
+  const { updateProfile, state } = useUserContext();
+  const { user } = state;
 
   const handleEditProfile = async (values: EditProfileData) => {
     if (user) {

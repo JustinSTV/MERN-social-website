@@ -109,11 +109,6 @@ router.put('/:userId', authenticateToken, async (req, res) => {
     const { userId } = req.params;
     const updates = req.body;
 
-    console.log('Update request received:', {
-      userId: req.params.userId,
-      updates: req.body
-    });
-
     const user = await usersCollection.findOne({ _id: userId });
 
     if (!user) {

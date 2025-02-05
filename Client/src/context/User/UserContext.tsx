@@ -139,7 +139,7 @@ export const UserProvider = ({ children }: ChildProps) => {
 
       dispatch({
         type: "UPDATE_PROFILE_SUCCESS",
-        payload: { user: data.user, message: "Profile updated successfully" },
+        payload: { user: data.user, message: data.message },
       });
       return true;
     } catch (error) {
