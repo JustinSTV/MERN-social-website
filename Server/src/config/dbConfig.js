@@ -4,6 +4,7 @@ import 'dotenv/config';
 let client;
 let dbInstance;
 export let usersCollection;
+export let imageCollection;
 
 const CONNECT_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.${process.env.DB_CLUSTER_ID}.mongodb.net/`
 
@@ -20,8 +21,9 @@ export const connectDB = async () => {
       dbInstance = client.db("social-website");
 
       usersCollection = dbInstance.collection("users");
+      imageCollection = dbInstance.collection("uploads");
 
-      console.log("✅users collections ready.");
+      console.log("✅users, ✅uploads collections ready.");
     } catch (error) {
       console.error('Error connecting to MongoDB', error);
       throw error;
