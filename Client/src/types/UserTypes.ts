@@ -3,6 +3,7 @@ export type UserContextTypes = {
   login: (email: string, password: string) => Promise<boolean>;
   register: (userData: RegisterData) => Promise<boolean>;
   updateProfile: (userId: string, userData: Partial<User>) => Promise<boolean>;
+  updateProfileImage: (userId: string, file: File) => Promise<boolean>;
   logout: () => void;
 };
 
@@ -47,6 +48,8 @@ export type EditProfileData = {
   bio: string;
 };
 
+export type UploadImageType = "profile" | "cover";
+
 export type UserActionTypes =
   | { type: "LOGIN_START" }
   | { type: "LOGIN_SUCCESS"; payload: { user: User; message: string } }
@@ -60,4 +63,13 @@ export type UserActionTypes =
   | { type: "CLEAR_MESSAGES" }
   | { type: "UPDATE_PROFILE_START" }
   | { type: "UPDATE_PROFILE_SUCCESS"; payload: { user: User; message: string } }
-  | { type: "UPDATE_PROFILE_FAILURE"; payload: string };
+  | { type: "UPDATE_PROFILE_FAILURE"; payload: string }
+  | { type: "UPLOAD_IMAGE_START" }
+  | { type: "UPLOAD_IMAGE_SUCCESS"; payload: { user: User; message: string } }
+  | { type: "UPLOAD_IMAGE_FAILURE"; payload: string };
+
+export interface ImageUploadResponse {
+  fileId: string;
+  url: string;
+  message: string;
+}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { User, EditProfileData } from "../../../../types/UserTypes";
 import EditProfileModal from "./EditProfileModal";
 import { useUserContext } from "../../../../context/User/useUserContext";
+import ProfileImage from "../../../UI/atom/ProfileImage";
 
 type ProfileHeaderProps = {
   user: User | null;
@@ -9,12 +10,19 @@ type ProfileHeaderProps = {
 };
 const ProfileHeader = ({ isOwnProfile }: ProfileHeaderProps) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const { updateProfile, state } = useUserContext();
+  const { updateProfile, updateProfileImage, state } = useUserContext();
   const { user } = state;
 
   const handleEditProfile = async (values: EditProfileData) => {
     if (user) {
       await updateProfile(user._id, values);
+    }
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && user) {
+      await updateProfileImage(user._id, file);
     }
   };
 
@@ -28,8 +36,12 @@ const ProfileHeader = ({ isOwnProfile }: ProfileHeaderProps) => {
       <div className="flex flex-col gap-20 bg-secondary-800 rounded-lg">
         <header className="relative h-48 bg-secondary-600 rounded-t-lg">
           <div className="absolute -bottom-16 left-8">
-            <div className="w-32 h-32 rounded-full border-4 border-secondary-900 bg-secondary-700">
-              {/* Profile photo */}
+            <div className=" rounded-full border-4 border-secondary-900 bg-secondary-700">
+              <ProfileImage
+                imageUrl={user.profileImage}
+                alt={`${user.firstName} ${user.lastName} profile picture`}
+                size="md"
+              />
             </div>
           </div>
         </header>
@@ -58,7 +70,8 @@ const ProfileHeader = ({ isOwnProfile }: ProfileHeaderProps) => {
               user={user}
               isOpen={editModalOpen}
               onClose={() => setEditModalOpen(false)}
-              onSubmit={handleEditProfile}
+              handleEditProfile={handleEditProfile}
+              handleImageUpload={handleImageUpload}
             />
           )}
         </div>

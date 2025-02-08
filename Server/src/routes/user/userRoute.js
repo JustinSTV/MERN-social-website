@@ -152,32 +152,34 @@ router.put('/:userId', authenticateToken, async (req, res) => {
   }
 })
 
-router.post('/test-upload', upload.single('image'), async (req, res) => {
+router.post('/:userId/upload-profile', authenticateToken, upload.single('image'), async (req, res) => {
   try {
-    await connectDB()
+    const { userId } = req.params;
+
     if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' })
+      return res.status(400).json({ message: 'No file uploaded' });
     }
 
-    const image = {
-      _id: generateID(),
-      filename: req.file.originalname,
-      contentType: req.file.mimetype,
-      uploadDate: new Date(),
-      data: req.file.buffer
-    };
 
-    await imageCollection.insertOne(image);
+    const imageBase64 = req.file.buffer.toString('base64');
+    const profileImage = `data:${req.file.mimetype};base64,${imageBase64}`;
 
-    res.status(200).json({
-      message: 'File uploaded successfully',
-      fileId: image._id,
-      filename: image.filename
+    await usersCollection.updateOne(
+      { _id: userId },
+      { $set: { profileImage } }
+    );
+
+    const updatedUser = await usersCollection.findOne({ _id: userId });
+    const { password: _, ...userWithoutPassword } = updatedUser;
+
+    res.json({
+      message: 'Profile picture updated successfully',
+      user: userWithoutPassword
     });
+
   } catch (error) {
     res.status(500).json({
       message: 'Upload failed',
-      error: error.message
     })
   }
 })
