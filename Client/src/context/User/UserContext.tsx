@@ -186,6 +186,41 @@ export const UserProvider = ({ children }: ChildProps) => {
     }
   };
 
+  const updateCoverImage = async (userId: string, file: File) => {
+    dispatch({ type: "UPLOAD_IMAGE_START" });
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const token = localStorage.getItem("token");
+      const res = await fetch(`/api/users/${userId}/upload-cover`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      dispatch({
+        type: "UPLOAD_IMAGE_SUCCESS",
+        payload: { user: data.user, message: data.message },
+      });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: "UPLOAD_IMAGE_FAILURE",
+        payload: error instanceof Error ? error.message : "Upload failed",
+      });
+      return false;
+    }
+  };
+
   const logout = () => {
     dispatch({ type: "LOGOUT" });
   };
@@ -198,6 +233,7 @@ export const UserProvider = ({ children }: ChildProps) => {
         register,
         updateProfile,
         updateProfileImage,
+        updateCoverImage,
         logout,
       }}
     >

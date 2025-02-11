@@ -4,6 +4,7 @@ export type UserContextTypes = {
   register: (userData: RegisterData) => Promise<boolean>;
   updateProfile: (userId: string, userData: Partial<User>) => Promise<boolean>;
   updateProfileImage: (userId: string, file: File) => Promise<boolean>;
+  updateCoverImage: (userId: string, file: File) => Promise<boolean>;
   logout: () => void;
 };
 

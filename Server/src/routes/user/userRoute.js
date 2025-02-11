@@ -182,6 +182,40 @@ router.post('/:userId/upload-profile', authenticateToken, upload.single('image')
       message: 'Upload failed',
     })
   }
-})
+});
+
+router.post('/:userId/upload-cover', authenticateToken, upload.single('image'), async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+
+    const imageBase64 = req.file.buffer.toString('base64');
+    const coverPicture = `data:${req.file.mimetype};base64,${imageBase64}`;
+
+    await usersCollection.updateOne(
+      { _id: userId },
+      { $set: { coverPicture } }
+    );
+
+    const updatedUser = await usersCollection.findOne({ _id: userId });
+    const { password: _, ...userWithoutPassword } = updatedUser;
+
+    res.json({
+      message: 'Cover photo updated successfully',
+      user: userWithoutPassword
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: 'Upload failed',
+    })
+  }
+});
+
+
 
 export default router;

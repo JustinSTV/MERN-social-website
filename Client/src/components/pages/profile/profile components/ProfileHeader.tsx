@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { User, EditProfileData } from "../../../../types/UserTypes";
-import EditProfileModal from "./EditProfileModal";
 import { useUserContext } from "../../../../context/User/useUserContext";
+
+import EditProfileModal from "./EditProfileModal";
 import ProfileImage from "../../../UI/atom/ProfileImage";
+import CoverPhoto from "../../../UI/molecule/CoverPhoto";
 
 type ProfileHeaderProps = {
   user: User | null;
@@ -10,7 +12,7 @@ type ProfileHeaderProps = {
 };
 const ProfileHeader = ({ isOwnProfile }: ProfileHeaderProps) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const { updateProfile, updateProfileImage, state } = useUserContext();
+  const { updateProfile, updateProfileImage, updateCoverImage, state } = useUserContext();
   const { user } = state;
 
   const handleEditProfile = async (values: EditProfileData) => {
@@ -26,15 +28,26 @@ const ProfileHeader = ({ isOwnProfile }: ProfileHeaderProps) => {
     }
   };
 
+  const handleCoverUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && user) {
+      await updateCoverImage(user._id, file);
+    }
+  };
+
   if (!user) {
     return <div>Loading</div>;
   }
 
   return (
     <>
-      {/* cover photo */}
       <div className="flex flex-col gap-20 bg-secondary-800 rounded-lg">
         <header className="relative h-48 bg-secondary-600 rounded-t-lg">
+          <CoverPhoto
+            coverUrl={user.coverPicture}
+            isOwnProfile={isOwnProfile}
+            handleCoverUpload={handleCoverUpload}
+          />
           <div className="absolute -bottom-16 left-8">
             <div className=" rounded-full border-4 border-secondary-900 bg-secondary-700">
               <ProfileImage

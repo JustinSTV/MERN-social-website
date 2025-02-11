@@ -28,10 +28,10 @@ const ProfilePage = () => {
 export default ProfilePage;
 
 /*TODO:
-  profile pic upload
-  cover photo
-  bio
+  profile pic upload +
+  cover photo +
+  bio +
   friends list
   user post
-  edit user profile
+  edit user profile +-
  */

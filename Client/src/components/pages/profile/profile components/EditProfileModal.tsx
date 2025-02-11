@@ -24,10 +24,8 @@ const EditProfileModal = ({
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Create preview URL
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
-      // Handle actual upload
       await handleImageUpload(event);
     }
   };
