@@ -6,6 +6,7 @@ import RegisterPage from './components/pages/auth/RegisterPage'
 import MainOutlet from './components/template/MainOutlet'
 import NewsFeed from './components/pages/feed/NewsFeed'
 import ProtectedRoute from './components/pages/auth/ProtectedRoute'
+import ProfilePage from './components/pages/profile/ProfilePage'
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
         <Route element={<MainOutlet />}>
           <Route path='/' element={<Navigate to="/feed" replace />} />
           <Route path='/feed' element={<NewsFeed />} />
+          <Route path='/profile/:userId' element={<ProfilePage />}/>
         </Route>
       </Route>
 

@@ -1,13 +1,32 @@
-import { usersCollection, connectDB } from "../../config/dbConfig.js";
+import { usersCollection, imageCollection, connectDB } from "../../config/dbConfig.js";
 import { checkExistingUser } from "../../middleware/checkUser.js";
 import { authenticateToken } from "../../middleware/authMiddleware.js"
 
 import { Router } from "express";
 import bcrypt from "bcrypt";
 import { v4 as generateID } from "uuid";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import multer from 'multer';
+import path from 'path';
 
 const router = Router();
+
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // filesize: 5Mb
+  fileFilter: (req, file, cb) => {
+    const allowedFileTypes = /jpeg|jpg|png/;
+    const extname = allowedFileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedFileTypes.test(file.mimetype);
+
+    if (extname && mimetype) {
+      return cb(null, true)
+    }
+    cb(new Error('Only images are allowed'));
+  }
+})
 
 router.post("/register", checkExistingUser, async (req, res) => {
   try {
@@ -20,11 +39,11 @@ router.post("/register", checkExistingUser, async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      // profileImage: '',
-      // coverPicture: "",
-      // bio: "",
-      // friends: [],
-      // createdAt: new Date(),
+      profileImage: '',
+      coverPicture: "",
+      bio: "",
+      friends: [],
+      createdAt: new Date(),
     };
 
     await usersCollection.insertOne(newUser);
@@ -102,6 +121,101 @@ router.get('/verify', authenticateToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Token verification failed" });
   }
+});
+
+router.put('/:userId', authenticateToken, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const updates = req.body;
+
+    const user = await usersCollection.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await usersCollection.updateOne(
+      { _id: userId },
+      { $set: updates }
+    );
+
+    const updatedUser = await usersCollection.findOne({ _id: userId });
+    const { password: _, ...userWithoutPassword } = updatedUser;
+
+    res.json({
+      message: "Profile updated successfully",
+      user: userWithoutPassword
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update profile" })
+  }
 })
+
+router.post('/:userId/upload-profile', authenticateToken, upload.single('image'), async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+
+    const imageBase64 = req.file.buffer.toString('base64');
+    const profileImage = `data:${req.file.mimetype};base64,${imageBase64}`;
+
+    await usersCollection.updateOne(
+      { _id: userId },
+      { $set: { profileImage } }
+    );
+
+    const updatedUser = await usersCollection.findOne({ _id: userId });
+    const { password: _, ...userWithoutPassword } = updatedUser;
+
+    res.json({
+      message: 'Profile picture updated successfully',
+      user: userWithoutPassword
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: 'Upload failed',
+    })
+  }
+});
+
+router.post('/:userId/upload-cover', authenticateToken, upload.single('image'), async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+
+    const imageBase64 = req.file.buffer.toString('base64');
+    const coverPicture = `data:${req.file.mimetype};base64,${imageBase64}`;
+
+    await usersCollection.updateOne(
+      { _id: userId },
+      { $set: { coverPicture } }
+    );
+
+    const updatedUser = await usersCollection.findOne({ _id: userId });
+    const { password: _, ...userWithoutPassword } = updatedUser;
+
+    res.json({
+      message: 'Cover photo updated successfully',
+      user: userWithoutPassword
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: 'Upload failed',
+    })
+  }
+});
+
+
 
 export default router;

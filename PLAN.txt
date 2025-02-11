@@ -1,5 +1,7 @@
 MERN-social-media-app
 
+YOUnivers
+
 Features:
   User Authentication (Sign up, Login, Logout)
   Profile Creation and Management
@@ -17,7 +19,7 @@ FRONT-END:
   TypeScript
   react-router-dom
   JWT
-  styled-components
+  styled-components/ tailwind
   forms and validations (formik/yup)
   react-icons
   Context/redux
