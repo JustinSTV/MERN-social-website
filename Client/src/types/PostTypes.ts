@@ -1,3 +1,7 @@
+export type PostContextTypes = {
+  state: PostState;
+};
+
 export type Post = {
   _id: string;
   author: {
@@ -38,3 +42,11 @@ export const initialState: PostState = {
   error: null,
   success: null,
 };
+
+export type PostActionTypes =
+  | { type: "CREATE_POST_START" }
+  | { type: "CREATE_POST_SUCCESS"; payload: Post }
+  | { type: "CREATE_POST_FAILURE"; payload: string }
+  | { type: "GET_POSTS_START" }
+  | { type: "GET_POSTS_SUCCESS"; payload: Post[] }
+  | { type: "GET_POSTS_FAILURE"; payload: string };
