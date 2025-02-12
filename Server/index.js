@@ -3,6 +3,7 @@ import 'dotenv/config';
 import cors from 'cors';
 
 import userRoutes from './src/routes/user/userRoute.js'
+import postRoutes from './src/routes/post/postRoute.js'
 
 const PORT = process.env.SERVER_PORT || 5501;
 const app = express();
@@ -11,5 +12,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/users", userRoutes);
+app.use("/posts", postRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
