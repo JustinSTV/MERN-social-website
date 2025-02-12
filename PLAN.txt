@@ -135,7 +135,7 @@ BACK-END:
   Node.js
   Express
   MongoDB
-  socket.io
+  socket.io or server sent events SSE
   uuid
   bcrypt
   JWT
