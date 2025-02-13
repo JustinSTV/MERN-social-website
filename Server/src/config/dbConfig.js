@@ -25,7 +25,7 @@ export const connectDB = async () => {
       postsCollection = dbInstance.collection("posts");
       imageCollection = dbInstance.collection("uploads");
 
-      console.log("✅users, ✅users, ✅uploads collections ready.");
+      console.log("✅users, ✅posts, ✅uploads collections ready.");
     } catch (error) {
       console.error('Error connecting to MongoDB', error);
       throw error;

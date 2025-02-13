@@ -23,6 +23,8 @@ export const PostProvider = ({ children }: ChildProps) => {
 
       const data = await res.json();
 
+      console.log(data.posts);
+
       dispatch({ type: "GET_POSTS_SUCCESS", payload: data.posts });
       return true;
     } catch (error) {
