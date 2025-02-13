@@ -12,8 +12,6 @@ router.post('/', authenticateToken, async (req, res) => {
     const { content } = req.body;
     const userId = req.user.id;
 
-    console.log(userId)
-    console.log(content)
 
     const user = await usersCollection.findOne({ _id: userId });
     if (!user) {
@@ -45,6 +43,21 @@ router.post('/', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: "Failed to create post" })
+  }
+});
+
+router.get("/", authenticateToken, async (req, res) => {
+  try {
+    await connectDB();
+    const posts = await postsCollection
+      .find()
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    res.json({ posts })
+  } catch (error) {
+    console.error("Get posts error:", error);
+    res.status(500).json({ message: "Failed to fetch post" })
   }
 })
 

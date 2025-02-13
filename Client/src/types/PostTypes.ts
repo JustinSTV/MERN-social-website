@@ -1,5 +1,6 @@
 export type PostContextTypes = {
   state: PostState;
+  getPosts: () => Promise<boolean>;
 };
 
 export type Post = {
