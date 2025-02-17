@@ -28,7 +28,41 @@ export const PostProvider = ({ children }: ChildProps) => {
     } catch (error) {
       dispatch({
         type: "CREATE_POST_FAILURE",
-        payload: error instanceof Error ? error.message : "Failed to create post",
+        payload: error instanceof Error ? error.message : "Failed to fetch post",
+      });
+      return false;
+    }
+  };
+
+  const createPosts = async (content: string) => {
+    try {
+      dispatch({ type: "CREATE_POST_START" });
+
+      const token = localStorage.getItem("token");
+      const res = await fetch("/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ content }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      dispatch({
+        type: "CREATE_POST_SUCCESS",
+        payload: data.post,
+      });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: "CREATE_POST_FAILURE",
+        payload: error instanceof Error ? error.message : "Failed to create Post",
       });
       return false;
     }
@@ -39,6 +73,7 @@ export const PostProvider = ({ children }: ChildProps) => {
       value={{
         state,
         getPosts,
+        createPosts,
       }}
     >
       {children}
