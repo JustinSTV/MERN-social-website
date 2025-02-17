@@ -1,4 +1,4 @@
-import ProfileImage from "./ProfileImage";
+import ProfileImage from "../atom/ProfileImage";
 
 type PostHeaderProps = {
   author: {

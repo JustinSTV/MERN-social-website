@@ -1,12 +1,12 @@
 import { Post as PostType } from "../../../types/PostTypes";
-import PostHeader from "../atom/PostHeader";
-import PostContent from "../atom/PostContent";
+import PostHeader from "../molecule/PostHeader";
+import PostContent from "../molecule/PostContent";
 
 type PostProps = {
   post: PostType;
 };
 
-const Post = ({ post }: PostProps) => {
+const PostCard = ({ post }: PostProps) => {
   return (
     <article className="bg-secondary-800 rounded-lg p-6 space-y-4">
       <PostHeader author={post.author} createdAt={post.createdAt} />
@@ -15,4 +15,4 @@ const Post = ({ post }: PostProps) => {
   );
 };
 
-export default Post;
+export default PostCard;

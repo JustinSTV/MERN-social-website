@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useUserContext } from "../../../context/User/useUserContext";
-import ProfileHeader from "./profile components/ProfileHeader";
-import ProfileAboutSection from "./profile components/ProfileAboutSection";
-import ProfileFriendsSection from "./profile components/ProfileFriendsSection";
+import ProfileHeader from "./profileComponents/ProfileHeader";
+import ProfileAboutSection from "./profileComponents/ProfileAboutSection";
+import ProfileFriendsSection from "./profileComponents/ProfileFriendsSection";
 
 const ProfilePage = () => {
   const { userId } = useParams<{ userId: string }>();
