@@ -62,4 +62,6 @@ router.get("/", authenticateToken, async (req, res) => {
 })
 
 
+// TODO: like a post functionality
+
 export default router;

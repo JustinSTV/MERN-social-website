@@ -3,6 +3,7 @@ import { useUserContext } from "../../../context/User/useUserContext";
 import ProfileHeader from "./profileComponents/ProfileHeader";
 import ProfileAboutSection from "./profileComponents/ProfileAboutSection";
 import ProfileFriendsSection from "./profileComponents/ProfileFriendsSection";
+import ProfilePostSection from "./profileComponents/ProfilePostSection";
 
 const ProfilePage = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -10,12 +11,15 @@ const ProfilePage = () => {
 
   const isOwnProfile = state.user?._id === userId;
 
+  if (!userId) return null;
+
   return (
     <main className="container mx-auto px-4">
       <div className="grid grid-cols-3 gap-6">
         <section className="col-span-2 mt-4">
           <ProfileHeader user={state.user} isOwnProfile={isOwnProfile} />
           <ProfileAboutSection bio={state.user?.bio} />
+          <ProfilePostSection userId={userId} />
         </section>
         <section className="bg-secondary-800 rounded-lg p-6 h-fit mt-4">
           <ProfileFriendsSection />
