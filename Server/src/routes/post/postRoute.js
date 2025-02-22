@@ -1,11 +1,28 @@
 import { Router } from 'express';
+import { v4 as generateID } from 'uuid';
+import multer from 'multer';
+
 import { usersCollection, postsCollection, connectDB } from '../../config/dbConfig.js';
 import { authenticateToken } from '../../middleware/authMiddleware.js';
-import { v4 as generateID } from 'uuid';
 
 const router = Router();
 
-router.post('/', authenticateToken, async (req, res) => {
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowedFileTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (allowedFileTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type'));
+    }
+  }
+})
+
+
+router.post('/', authenticateToken, upload.single('image'), async (req, res) => {
   try {
     await connectDB();
 
@@ -18,6 +35,12 @@ router.post('/', authenticateToken, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     };
 
+    let media = null;
+    if (req.file) {
+      const imageBase64 = req.file.buffer.toString('base64');
+      media = `data:${req.file.mimetype};base64,${imageBase64}`;
+    }
+
     const newPost = {
       _id: generateID(),
       author: {
@@ -27,6 +50,7 @@ router.post('/', authenticateToken, async (req, res) => {
         profileImage: user.profileImage
       },
       content,
+      media,
       likes: [],
       comments: [],
       createdAt: new Date()
