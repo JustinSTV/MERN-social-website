@@ -1,3 +1,7 @@
+import { useUserContext } from "../../../context/User/useUserContext";
+import { usePostContext } from "../../../context/Post/usePostContext";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+
 import { Post as PostType } from "../../../types/PostTypes";
 import PostHeader from "../molecule/PostHeader";
 import PostContent from "../molecule/PostContent";
@@ -7,6 +11,17 @@ type PostProps = {
 };
 
 const PostCard = ({ post }: PostProps) => {
+  const {
+    state: { user },
+  } = useUserContext();
+  const { likePost } = usePostContext();
+
+  const isLiked = user && post.likes.includes(user._id);
+
+  const handleLike = async () => {
+    await likePost(post._id);
+  };
+
   return (
     <article
       className="
@@ -17,6 +32,15 @@ const PostCard = ({ post }: PostProps) => {
     >
       <PostHeader author={post.author} createdAt={post.createdAt} />
       <PostContent content={post.content} />
+      <div className="flex items-center gap-2">
+        <button
+          onClick={handleLike}
+          className="flex items-center gap-1 text-sm text-secondary-400 hover:text-primary-500 transition-colors"
+        >
+          {isLiked ? <AiFillHeart className="text-primary-500" /> : <AiOutlineHeart />}
+          <span>{post.likes.length}</span>
+        </button>
+      </div>
     </article>
   );
 };

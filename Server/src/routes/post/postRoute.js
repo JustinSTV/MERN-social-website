@@ -61,7 +61,34 @@ router.get("/", authenticateToken, async (req, res) => {
   }
 })
 
+router.post('/:postId/like', authenticateToken, async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.user.id;
 
-// TODO: like a post functionality
+    const post = await postsCollection.findOne({ _id: postId });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const hasLiked = post.likes.includes(userId);
+    const updateOperation = hasLiked
+      ? { $pull: { likes: userId } }
+      : { $push: { likes: userId } };
+
+    await postsCollection.updateOne(
+      { _id: postId },
+      updateOperation
+    );
+
+    res.json({
+      message: hasLiked ? "Post unliked" : "Post liked",
+      userId
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to like post' });
+  }
+})
 
 export default router;

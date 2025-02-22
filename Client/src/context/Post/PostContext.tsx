@@ -68,12 +68,46 @@ export const PostProvider = ({ children }: ChildProps) => {
     }
   };
 
+  const likePost = async (postId: string) => {
+    try {
+      dispatch({ type: "LIKE_POST_START" });
+
+      const token = localStorage.getItem("token");
+      const res = await fetch(`/api/posts/${postId}/like`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      dispatch({
+        type: "LIKE_POST_SUCCESS",
+        payload: { postId, userId: data.userId },
+      });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: "LIKE_POST_FAILURE",
+        payload: error instanceof Error ? error.message : "Failed to like Post",
+      });
+      return false;
+    }
+  };
+
   return (
     <PostContext.Provider
       value={{
         state,
         getPosts,
         createPosts,
+        likePost,
       }}
     >
       {children}

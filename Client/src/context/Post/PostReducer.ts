@@ -34,6 +34,22 @@ const postReducer = (state: PostState, action: PostActionTypes) => {
         error: action.payload,
       };
 
+    case "LIKE_POST_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        posts: state.posts.map((post) =>
+          post._id === action.payload.postId
+            ? {
+                ...post,
+                likes: post.likes.includes(action.payload.userId)
+                  ? post.likes.filter((id) => id !== action.payload.userId)
+                  : [...post.likes, action.payload.userId],
+              }
+            : post
+        ),
+      };
+
     default:
       return state;
   }
