@@ -5,6 +5,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { Post as PostType } from "../../../types/PostTypes";
 import PostHeader from "../molecule/PostHeader";
 import PostContent from "../molecule/PostContent";
+import PostImage from "../atom/PostImage";
 
 type PostProps = {
   post: PostType;
@@ -32,6 +33,7 @@ const PostCard = ({ post }: PostProps) => {
     >
       <PostHeader author={post.author} createdAt={post.createdAt} />
       <PostContent content={post.content} />
+      {post.media && <PostImage src={post.media} alt={post.content} />}
       <div className="flex items-center gap-2">
         <button
           onClick={handleLike}
